@@ -1,0 +1,188 @@
+using UnityEngine;
+
+public class GridManager : MonoBehaviour
+{
+    public int gridSize = 10;
+    public int mineCount = 10;
+
+    public GameObject cellPrefab;
+    public Transform gridParent;
+
+    [Header("Sprites")]
+    public Sprite closedSprite;
+    public Sprite emptySprite;
+    public Sprite flagSprite;
+    public Sprite mineSprite;
+    public Sprite explodedMineSprite;
+    public Sprite wrongFlagSprite;
+    public Sprite[] numberSprites; // 1-8
+
+    private Cell[,] grid;
+
+    public int flagsLeft;
+    public bool isGameOver;
+
+    void Start()
+    {
+        GenerateGrid();
+    }
+
+    void GenerateGrid()
+    {
+        flagsLeft = mineCount;
+        grid = new Cell[gridSize, gridSize];
+
+        // создаем клетки
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int y = 0; y < gridSize; y++)
+            {
+                GameObject obj = Instantiate(cellPrefab, gridParent);
+                Cell cell = obj.GetComponent<Cell>();
+
+                cell.x = x;
+                cell.y = y;
+                cell.Init(this);
+
+                grid[x, y] = cell;
+            }
+        }
+
+        PlaceMines();
+        CalculateNumbers();
+    }
+
+    void PlaceMines()
+    {
+        int placed = 0;
+
+        while (placed < mineCount)
+        {
+            int x = Random.Range(0, gridSize);
+            int y = Random.Range(0, gridSize);
+
+            if (!grid[x, y].isMine)
+            {
+                grid[x, y].isMine = true;
+                placed++;
+            }
+        }
+    }
+
+    void CalculateNumbers()
+    {
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int y = 0; y < gridSize; y++)
+            {
+                if (grid[x, y].isMine) continue;
+
+                int count = 0;
+
+                for (int dx = -1; dx <= 1; dx++)
+                {
+                    for (int dy = -1; dy <= 1; dy++)
+                    {
+                        int nx = x + dx;
+                        int ny = y + dy;
+
+                        if (IsInside(nx, ny) && grid[nx, ny].isMine)
+                            count++;
+                    }
+                }
+
+                grid[x, y].neighborMines = count;
+            }
+        }
+    }
+
+    public void OpenNeighbors(int x, int y)
+    {
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            for (int dy = -1; dy <= 1; dy++)
+            {
+                int nx = x + dx;
+                int ny = y + dy;
+
+                if (IsInside(nx, ny))
+                {
+                    if (!grid[nx, ny].isOpen)
+                        grid[nx, ny].Open();
+                }
+            }
+        }
+    }
+
+    bool IsInside(int x, int y)
+    {
+        return x >= 0 && y >= 0 && x < gridSize && y < gridSize;
+    }
+
+    public void GameOver(Cell explodedCell)
+    {
+        isGameOver = true;
+
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int y = 0; y < gridSize; y++)
+            {
+                Cell cell = grid[x, y];
+
+                if (cell.isMine && !cell.isFlagged)
+                {
+                    cell.SetSprite(mineSprite);
+                }
+
+                if (cell == explodedCell)
+                {
+                    cell.SetSprite(explodedMineSprite);
+                }
+
+                if (cell.isFlagged && !cell.isMine)
+                {
+                    cell.SetSprite(wrongFlagSprite);
+                }
+            }
+        }
+    }
+
+    public void CheckWin()
+    {
+        int correctFlags = 0;
+
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int y = 0; y < gridSize; y++)
+            {
+                Cell cell = grid[x, y];
+
+                if (cell.isMine && cell.isFlagged)
+                    correctFlags++;
+            }
+        }
+
+        if (correctFlags == mineCount)
+        {
+            Win();
+        }
+    }
+
+    void Win()
+    {
+        isGameOver = true;
+
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int y = 0; y < gridSize; y++)
+            {
+                Cell cell = grid[x, y];
+
+                if (!cell.isMine)
+                {
+                    cell.SetSprite(emptySprite);
+                }
+            }
+        }
+    }
+}
