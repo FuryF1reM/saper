@@ -46,6 +46,8 @@ public class Cell : MonoBehaviour, IPointerClickHandler
 
     void ToggleFlag()
     {
+        if (isOpen) return;
+        
         if (!isFlagged && grid.flagsLeft <= 0) return;
 
         isFlagged = !isFlagged;
