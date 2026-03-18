@@ -351,17 +351,17 @@ MonoBehaviour:
   flagSprite: {fileID: -5154189640090123692, guid: e4fde080cc448174e8607a88e259b19d, type: 3}
   mineSprite: {fileID: -2823100650957023179, guid: 9474b281054b7694aaa98adb988616ff, type: 3}
   explodedMineSprite: {fileID: -4190769913938968172, guid: e987c2c2d04e50c4aa7297de32447874, type: 3}
-  wrongFlagSprite: {fileID: 0}
+  wrongFlagSprite: {fileID: 5839820706974066888, guid: b94f54d7784b53d4f91a14e70c59e339, type: 3}
   numberSprites:
   - {fileID: 0}
   - {fileID: 1235814452771839541, guid: 1567538ee1224a648adebdb9b34fd145, type: 3}
   - {fileID: 3051391339704506818, guid: d20da9ba5b7ce414ba87e8d0a1c811e3, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 222410923883068219, guid: 06c1cc21442479a48ad789848b037bc8, type: 3}
+  - {fileID: -605948224980567077, guid: 990dbf15c91716c4e9498606e1ac6051, type: 3}
+  - {fileID: -5504649731549275676, guid: ad64630007348d643ab226977cc1db58, type: 3}
+  - {fileID: -8706962426457765743, guid: 982c223722578cd4c98f1d38ba4fdb76, type: 3}
+  - {fileID: 7947668251283276518, guid: a08c170cdd05fd44493613c81bd0ec42, type: 3}
+  - {fileID: -5902673977381430795, guid: 9be1e8350c6c17e488873f82bea98f6a, type: 3}
   flagsLeft: 0
   isGameOver: 0
 --- !u!4 &1080709700
@@ -436,7 +436,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 100, y: 100}
+  m_CellSize: {x: 30, y: 30}
   m_Spacing: {x: 2, y: 2}
   m_Constraint: 1
   m_ConstraintCount: 10
