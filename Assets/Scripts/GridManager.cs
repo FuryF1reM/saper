@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 public class GridManager : MonoBehaviour
 {
     public int gridSize = 10;
@@ -16,19 +17,27 @@ public class GridManager : MonoBehaviour
     public Sprite mineSprite;
     public Sprite explodedMineSprite;
     public Sprite wrongFlagSprite;
-    public Sprite[] numberSprites; // 1-8
+    public Sprite[] numberSprites; 
 
     private Cell[,] grid;
 
     public int flagsLeft;
     public bool isGameOver;
 
+    [Header("UI")]
+    public TextMeshProUGUI flagsText;
+    public TextMeshProUGUI timerText;
+
+    private int timeElapsed = 0;
+    private bool timerRunning = false;
     IEnumerator Start()
     {
         yield return null;
 
         SetupGridSize();
         GenerateGrid();
+        UpdateFlagsUI();
+        UpdateTimerUI();
     }
 
     void GenerateGrid()
@@ -36,7 +45,6 @@ public class GridManager : MonoBehaviour
         flagsLeft = mineCount;
         grid = new Cell[gridSize, gridSize];
 
-        // создаем клетки
         for (int x = 0; x < gridSize; x++)
         {
             for (int y = 0; y < gridSize; y++)
@@ -126,7 +134,7 @@ public class GridManager : MonoBehaviour
     public void GameOver(Cell explodedCell)
     {
         isGameOver = true;
-
+        timerRunning = false;
         for (int x = 0; x < gridSize; x++)
         {
             for (int y = 0; y < gridSize; y++)
@@ -175,7 +183,7 @@ public class GridManager : MonoBehaviour
     void Win()
     {
         isGameOver = true;
-
+        timerRunning = false;
         for (int x = 0; x < gridSize; x++)
         {
             for (int y = 0; y < gridSize; y++)
@@ -207,5 +215,32 @@ public class GridManager : MonoBehaviour
         layout.cellSize = new Vector2(cellSize, cellSize);
         layout.spacing = new Vector2(spacing, spacing);
         layout.constraintCount = gridSize;
+    }
+    public bool IsTimerRunning()
+    {
+        return timerRunning;
+    }
+    public void UpdateFlagsUI()
+    {
+        flagsText.text = flagsLeft.ToString("000");
+    }
+    void UpdateTimerUI()
+    {
+        timerText.text = timeElapsed.ToString("000");
+    }
+    IEnumerator Timer()
+    {
+        timerRunning = true;
+
+        while (timerRunning)
+        {
+            yield return new WaitForSeconds(1f);
+            timeElapsed++;
+            UpdateTimerUI();
+        }
+    }
+    public void StartTimer()
+    {
+        StartCoroutine(Timer());
     }
 }

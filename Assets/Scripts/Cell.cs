@@ -51,7 +51,7 @@ public class Cell : MonoBehaviour, IPointerClickHandler
         if (!isFlagged && grid.flagsLeft <= 0) return;
 
         isFlagged = !isFlagged;
-
+        
         if (isFlagged)
         {
             grid.flagsLeft--;
@@ -62,12 +62,16 @@ public class Cell : MonoBehaviour, IPointerClickHandler
             grid.flagsLeft++;
             SetSprite(grid.closedSprite);
         }
-
+        grid.UpdateFlagsUI();
         grid.CheckWin();
     }
 
     public void Open()
     {
+        if (!grid.IsTimerRunning())
+        {
+            grid.StartTimer();
+        }
         if (isOpen || isFlagged) return;
 
         isOpen = true;
