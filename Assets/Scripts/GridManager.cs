@@ -30,6 +30,11 @@ public class GridManager : MonoBehaviour
 
     private int timeElapsed = 0;
     private bool timerRunning = false;
+
+    [Header("UI Panels")]
+    public GameObject losePanel;
+    public GameObject winPanel;
+
     IEnumerator Start()
     {
         yield return null;
@@ -135,6 +140,7 @@ public class GridManager : MonoBehaviour
     {
         isGameOver = true;
         timerRunning = false;
+        ShowLose();
         for (int x = 0; x < gridSize; x++)
         {
             for (int y = 0; y < gridSize; y++)
@@ -184,6 +190,7 @@ public class GridManager : MonoBehaviour
     {
         isGameOver = true;
         timerRunning = false;
+        ShowWin();
         for (int x = 0; x < gridSize; x++)
         {
             for (int y = 0; y < gridSize; y++)
@@ -242,5 +249,35 @@ public class GridManager : MonoBehaviour
     public void StartTimer()
     {
         StartCoroutine(Timer());
+    }
+    void ShowLose()
+    {
+        losePanel.SetActive(true);
+    }
+    void ShowWin()
+    {
+        winPanel.SetActive(true);
+    }
+    public void RestartGame()
+    {
+        timerRunning = false;
+        timeElapsed = 0;
+
+        losePanel.SetActive(false);
+        winPanel.SetActive(false);
+
+        foreach (Transform child in gridParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        flagsLeft = mineCount;
+
+        UpdateFlagsUI();
+        UpdateTimerUI();
+
+        isGameOver = false;
+
+        GenerateGrid();
     }
 }
