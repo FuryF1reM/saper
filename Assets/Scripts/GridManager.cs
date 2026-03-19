@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using TMPro;
 public class GridManager : MonoBehaviour
 {
@@ -38,7 +39,8 @@ public class GridManager : MonoBehaviour
     IEnumerator Start()
     {
         yield return null;
-
+        gridSize = GameSettings.gridSize;
+        mineCount = GameSettings.mineCount; 
         SetupGridSize();
         GenerateGrid();
         UpdateFlagsUI();
@@ -279,5 +281,9 @@ public class GridManager : MonoBehaviour
         isGameOver = false;
 
         GenerateGrid();
+    }
+    public void ExitToMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }
