@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using UnityEngine.UI;
+using System.Collections;
 public class GridManager : MonoBehaviour
 {
     public int gridSize = 10;
@@ -22,8 +23,11 @@ public class GridManager : MonoBehaviour
     public int flagsLeft;
     public bool isGameOver;
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return null;
+
+        SetupGridSize();
         GenerateGrid();
     }
 
@@ -184,5 +188,24 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+    }
+    void SetupGridSize()
+    {
+        GridLayoutGroup layout = gridParent.GetComponent<GridLayoutGroup>();
+        RectTransform rect = gridParent.GetComponent<RectTransform>();
+
+        float size = rect.rect.width;
+
+        float spacingFactor = 0.025f;
+
+        float totalUnits = gridSize + spacingFactor * (gridSize - 1);
+
+        float cellSize = size / totalUnits;
+
+        float spacing = cellSize * spacingFactor;
+
+        layout.cellSize = new Vector2(cellSize, cellSize);
+        layout.spacing = new Vector2(spacing, spacing);
+        layout.constraintCount = gridSize;
     }
 }
