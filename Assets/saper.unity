@@ -1218,7 +1218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
   gridSize: 10
-  mineCount: 10
+  mineCount: 12
   cellPrefab: {fileID: 3144887977628136458, guid: 78020590cd804b749ada45897555a201, type: 3}
   gridParent: {fileID: 1146110850}
   closedSprite: {fileID: -7322267885201326052, guid: e75c22c9c571fde4c9d1e6c23ec99553, type: 3}
