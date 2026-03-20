@@ -245,8 +245,10 @@ public class GridManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
             if (timeElapsed < 999)
-            timeElapsed++;
-            UpdateTimerUI();
+            {
+                timeElapsed++;
+                UpdateTimerUI();
+            }
         }
     }
     public void StartTimer()
