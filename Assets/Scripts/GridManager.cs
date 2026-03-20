@@ -244,6 +244,7 @@ public class GridManager : MonoBehaviour
         while (timerRunning)
         {
             yield return new WaitForSeconds(1f);
+            if (timeElapsed < 999)
             timeElapsed++;
             UpdateTimerUI();
         }
